@@ -44,7 +44,7 @@ More details about the setup here - [Deploy single codebase to multiple Clouds](
 
 ### /ping-with-input API with valid input
 
-`serverless --config serverless-aws.yml invoke local --function ping-with-input --data "{\"queryStringParameters\": {\"x\":10}}"`
+`serverless --config serverless-aws.yml invoke local --function ping-with-input --data "{\"queryStringParameters\": {\"x\":10}}" --stage Prod --region ap-south-1`
 
 ```
 request received { x: 10 }
@@ -57,13 +57,36 @@ Input received 10
 
 ### /ping-with-input API with invalid input
 
-`serverless --config serverless-aws.yml invoke local --function ping-with-input --data "{\"queryStringParameters\": {}}"`
+`serverless --config serverless-aws.yml invoke local --function ping-with-input --data "{\"queryStringParameters\": {}}" --stage Prod --region ap-south-1`
 
 ```
 request received {}
 {
     "statusCode": 400,
     "body": "Query string Parameter `x` is missing or empty"
+}
+```
+
+### /save-user API (puts data into DynamoDB in Prod)
+
+`serverless --config serverless-aws.yml invoke local --function save-user --data "{\"body\": {\"userId\":\"1\", \"name\":\"UserOne\"}}" --stage Prod --region ap-south-1`
+
+```
+save user request { userId: '1', name: 'UserOne' }
+{
+    "statusCode": 200
+}
+```
+
+### /get-user API (fetches data from same DynamoDB table in Prod)
+
+`serverless --config serverless-aws.yml invoke local --function get-user --data "{\"queryStringParameters\": {\"userId\":\"1\"}}" --stage Prod --region ap-south-1`
+
+```
+get user request 1
+{
+    "statusCode": 200,
+    "body": "{\"user\":{\"userId\":\"1\",\"name\":\"UserOne\"}}"
 }
 ```
 
@@ -106,8 +129,8 @@ Hello world
 ```
 ...
 endpoints:
-  GET - https://c8n0w2eje8.execute-api.ap-south-1.amazonaws.com/Prod/ping
-  GET - https://c8n0w2eje8.execute-api.ap-south-1.amazonaws.com/Prod/ping-with-input
+  GET - https://c8n0wxxxxx.execute-api.ap-south-1.amazonaws.com/Prod/ping
+  GET - https://c8n0wxxxxx.execute-api.ap-south-1.amazonaws.com/Prod/ping-with-input
 ...
 ```
 
@@ -130,7 +153,7 @@ Outside the scope of this package. We don't need serverless for this release.
 
 ### /ping API
 
-`curl -X GET "https://c8n0w2eje8.execute-api.ap-south-1.amazonaws.com/Prod/ping"`
+`curl -X GET "https://c8n0wxxxxx.execute-api.ap-south-1.amazonaws.com/Prod/ping"`
 
 ```
 Hello world
@@ -138,7 +161,7 @@ Hello world
 
 ### /ping-with-input API with valid parameters
 
-`curl -X GET "https://c8n0w2eje8.execute-api.ap-south-1.amazonaws.com/Prod/ping-with-input?x=10"`
+`curl -X GET "https://c8n0wxxxxx.execute-api.ap-south-1.amazonaws.com/Prod/ping-with-input?x=10"`
 
 ```
 {"y":20}
@@ -146,11 +169,21 @@ Hello world
 
 ### /ping-with-input API with invalid parameters
 
-`curl -X GET "https://c8n0w2eje8.execute-api.ap-south-1.amazonaws.com/Prod/ping-with-input?x1=10"`
+`curl -X GET "https://c8n0wxxxxx.execute-api.ap-south-1.amazonaws.com/Prod/ping-with-input?x1=10"`
 
 ```
 Query string Parameter `x` is missing or empty
 ```
+
+### /save-user API (puts data into DynamoDB in Prod)
+
+`curl -X POST "https://xe8du1kz6i.execute-api.ap-south-1.amazonaws.com/Prod/save-user" -d '{"userId": 2, "name": "UserTwo"}'`
+Doesn't work currently !!
+
+### /get-user API (fetches data from same DynamoDB table in Prod)
+
+`curl -X GET "https://xe8du1kz6i.execute-api.ap-south-1.amazonaws.com/Prod/get-user?userId=1`
+`{"user":{"userId":"1","name":"UserOne"}}`
 
 ## Test in azure production
 

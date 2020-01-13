@@ -3,6 +3,14 @@ service: serverless-rest-service-template
 provider:
     name: aws
     runtime: nodejs12.x
+    iamRoleStatements: # permissions for all of your functions can be set here
+        - Effect: Allow
+          Action: # Gives permission to DynamoDB tables
+              - dynamodb:Query
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+          Resource: 'arn:aws:dynamodb:*:*:*'
 
 functions:
     ping:
@@ -12,8 +20,35 @@ functions:
                   path: /ping
                   method: get
     ping-with-input:
-        handler: dist/index/aws.ping_with_input
+        handler: dist/index/aws.pingWithInput
         events:
             - http:
                   path: /ping-with-input
                   method: get
+    save-user:
+        handler: dist/index/aws.saveUser
+        events:
+            - http:
+                  path: /save-user
+                  method: post
+    get-user:
+        handler: dist/index/aws.getUser
+        events:
+            - http:
+                  path: /get-user
+                  method: get
+
+resources:
+    Resources:
+        Users:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: 'Users'
+                AttributeDefinitions:
+                    - AttributeName: userId
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: userId
+                      KeyType: HASH
+                # Set the capacity to auto-scale
+                BillingMode: PAY_PER_REQUEST
