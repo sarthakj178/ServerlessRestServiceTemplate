@@ -1,0 +1,19 @@
+service: serverless-rest-service-template
+
+provider:
+    name: aws
+    runtime: nodejs12.x
+
+functions:
+    ping:
+        handler: dist/index/aws.ping
+        events:
+            - http:
+                  path: /ping
+                  method: get
+    ping-with-input:
+        handler: dist/index/aws.ping_with_input
+        events:
+            - http:
+                  path: /ping-with-input
+                  method: get

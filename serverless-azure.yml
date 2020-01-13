@@ -1,0 +1,27 @@
+service: serverless-rest-service-template
+
+plugins:
+    - serverless-azure-functions
+provider:
+    name: azure
+    region: West US 2
+    runtime: nodejs8.1
+
+functions:
+    ping:
+        handler: dist/index/azure.ping
+        events:
+            - http: true
+              x-azure-settings:
+                  methods:
+                      - GET
+                  authLevel: anonymous
+
+    ping-with-input:
+        handler: dist/index/azure.ping_with_input
+        events:
+            - http: true
+              x-azure-settings:
+                  methods:
+                      - GET
+                  authLevel: anonymous

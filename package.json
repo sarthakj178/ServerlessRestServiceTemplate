@@ -1,0 +1,31 @@
+{
+    "name": "serverless-rest-service-template",
+    "version": "1.0.0",
+    "description": "A template for creating a Sample REST Service using serverless framework - deploying on AWS, Azure and on-premise",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sarthakj178/ServerlessRestServiceTemplate.git"
+    },
+    "author": "Sarthak Jain (sarthakj178@gmail.com)",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/sarthakj178/ServerlessRestServiceTemplate/issues"
+    },
+    "homepage": "https://github.com/sarthakj178/ServerlessRestServiceTemplate#readme",
+    "dependencies": {
+        "@types/node": "^13.1.6",
+        "aws-lambda": "^1.0.5",
+        "aws-sdk": "^2.601.0",
+        "express": "^4.17.1",
+        "request": "^2.88.0",
+        "request-promise": "^4.2.5"
+    },
+    "devDependencies": {
+        "serverless-azure-functions": "^1.0.2"
+    }
+}
