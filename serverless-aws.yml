@@ -27,12 +27,16 @@ functions:
                   method: get
     save-user:
         handler: dist/index/aws.saveUser
+        environment:
+            DynamoDBTableName: ${self:service.name}-Users
         events:
             - http:
                   path: /save-user
                   method: post
     get-user:
         handler: dist/index/aws.getUser
+        environment:
+            DynamoDBTableName: ${self:service.name}-Users
         events:
             - http:
                   path: /get-user
@@ -43,7 +47,7 @@ resources:
         Users:
             Type: AWS::DynamoDB::Table
             Properties:
-                TableName: 'Users'
+                TableName: ${self:service.name}-Users
                 AttributeDefinitions:
                     - AttributeName: userId
                       AttributeType: S

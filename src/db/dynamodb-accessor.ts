@@ -9,9 +9,10 @@ export class DynamoDBAccessor implements DbAccessor {
     }
 
     async getUser(userId: string): Promise<User> {
+        console.log('table name', process.env.DynamoDBTableName);
         const res = await this.docClient
             .get({
-                TableName: 'Users',
+                TableName: process.env.DynamoDBTableName,
                 Key: {
                     userId: userId
                 }
@@ -27,7 +28,7 @@ export class DynamoDBAccessor implements DbAccessor {
     async saveUser(user: User): Promise<void> {
         await this.docClient
             .put({
-                TableName: 'Users',
+                TableName: process.env.DynamoDBTableName,
                 Item: user
             })
             .promise();
