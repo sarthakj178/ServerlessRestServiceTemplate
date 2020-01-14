@@ -1,8 +1,8 @@
 {
-    "name": "serverless-rest-service-template",
+    "name": "app-user-management-service",
     "version": "1.0.0",
-    "description": "A template for creating a Sample REST Service using serverless framework - deploying on AWS, Azure and on-premise",
-    "main": "index.js",
+    "description": "Service for managing the relationship between apps and users - Managed using serverless",
+    "main": "dist/index.js",
     "scripts": {
         "build": "tsc",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
         "type": "git",
         "url": "git+https://github.com/sarthakj178/ServerlessRestServiceTemplate.git"
     },
-    "author": "Sarthak Jain (sarthakj178@gmail.com)",
+    "author": "sarthak@clappia.com",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/sarthakj178/ServerlessRestServiceTemplate/issues"
@@ -30,6 +30,6 @@
         "sqlite3": "^4.1.1"
     },
     "devDependencies": {
-        "serverless-azure-functions": "^1.0.2"
+        "typescript": "^3.7.4"
     }
 }

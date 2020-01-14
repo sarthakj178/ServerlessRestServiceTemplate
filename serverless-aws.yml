@@ -1,4 +1,4 @@
-service: serverless-rest-service-template
+service: AppUserManagementService
 
 provider:
     name: aws
@@ -13,46 +13,70 @@ provider:
           Resource: 'arn:aws:dynamodb:*:*:*'
 
 functions:
-    ping:
-        handler: dist/index/aws.ping
+    getUserAppsMetadata:
+        handler: dist/index/aws.getUserAppsMetadata
         events:
             - http:
-                  path: /ping
+                  path: /getUserAppsMetadata
                   method: get
-    ping-with-input:
-        handler: dist/index/aws.pingWithInput
+    getAppUsers:
+        handler: dist/index/aws.getAppUsers
         events:
             - http:
-                  path: /ping-with-input
-                  method: get
-    save-user:
-        handler: dist/index/aws.saveUser
-        environment:
-            DynamoDBTableName: ${self:service.name}-Users
-        events:
-            - http:
-                  path: /save-user
+                  path: /getAppUsers
                   method: post
-    get-user:
-        handler: dist/index/aws.getUser
-        environment:
-            DynamoDBTableName: ${self:service.name}-Users
+    addUserToApp:
+        handler: dist/index/aws.addUserToApp
         events:
             - http:
-                  path: /get-user
-                  method: get
+                  path: /addUserToApp
+                  method: post
+    addUsersToApp:
+        handler: dist/index/aws.addUsersToApp
+        events:
+            - http:
+                  path: /addUsersToApp
+                  method: post
+    updateUserAppPermissions:
+        handler: dist/index/aws.updateUserAppPermissions
+        events:
+            - http:
+                  path: /updateUserAppPermissions
+                  method: post
+    removeUserFromApp:
+        handler: dist/index/aws.removeUserFromApp
+        events:
+            - http:
+                  path: /removeUserFromApp
+                  method: post
+    removeUserFromAllApps:
+        handler: dist/index/aws.removeUserFromAllApps
+        events:
+            - http:
+                  path: /removeUserFromAllApps
+                  method: post
 
 resources:
     Resources:
-        Users:
+        UserApps:
             Type: AWS::DynamoDB::Table
             Properties:
-                TableName: ${self:service.name}-Users
+                TableName: UserApps
                 AttributeDefinitions:
-                    - AttributeName: userId
+                    - AttributeName: userIdWorkplaceId
+                      AttributeType: S
+                    - AttributeName: appId
                       AttributeType: S
                 KeySchema:
-                    - AttributeName: userId
+                    - AttributeName: userIdWorkplaceId
                       KeyType: HASH
-                # Set the capacity to auto-scale
+                    - AttributeName: appId
+                      KeyType: RANGE
+                GlobalSecondaryIndexes:
+                    - IndexName: appId-index
+                      KeySchema:
+                          - AttributeName: appId
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
                 BillingMode: PAY_PER_REQUEST

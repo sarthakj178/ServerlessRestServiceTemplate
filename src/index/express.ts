@@ -1,44 +1,36 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-import { PingHandler } from '../handlers/ping-handler';
 import { SQLiteAccessor } from '../db/sqlite-accessor';
-import { UserHandler } from '../handlers/user-handler';
+import { UserAppsHandler } from '../handlers/user-apps-handler';
 const sqliteAccessor = new SQLiteAccessor();
-const pingHandler = new PingHandler();
-const userHandler = new UserHandler(sqliteAccessor);
+const userAppsHandler = new UserAppsHandler(sqliteAccessor);
+
+app.use(bodyParser.json());
 
 app.get('/ping', async (req, res) => {
-    res.send(await pingHandler.ping());
+    res.send('Hello world');
 });
-app.get('/ping-with-input', async (req, res) => {
-    console.log('request received', req.query);
-    res.send({ y: await pingHandler.ping_with_input(req.query.x) });
+app.get('/getUserAppsMetadata', async (req, res) => {
+    res.send('Hello world');
 });
-
-app.post('/save-user', async (req, res) => {
-    console.log('save user request', req.body);
-    try {
-        await userHandler.saveUser(req.body);
-        res.send({ message: 'Saved user' });
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+app.post('/getAppUsers', async (req, res) => {
+    res.send('Hello world');
 });
-app.get('/get-user', async (req, res) => {
-    console.log('get user request', req.query);
-    try {
-        const user = await userHandler.getUser(req.query.userId);
-        res.send({
-            user
-        });
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+app.post('/addUserToApp', async (req, res) => {
+    res.send('Hello world');
 });
-
+app.post('/addUsersToApp', async (req, res) => {
+    res.send('Hello world');
+});
+app.post('/updateUserAppPermissions', async (req, res) => {
+    res.send('Hello world');
+});
+app.post('/removeUserFromApp', async (req, res) => {
+    res.send('Hello world');
+});
+app.post('/removeUserFromAllApps', async (req, res) => {
+    res.send('Hello world');
+});
 const port = 3000;
 app.listen(port, () => console.log(`Express app listening on port ${port}!`));
