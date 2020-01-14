@@ -122,6 +122,22 @@ Hello world
 {"y":null}
 ```
 
+### /save-user API (puts data into an SQLite db)
+
+`curl -X POST "http://localhost:3000/save-user" -d '{"userId": "1", "name": "User One"}' -H "Content-Type: application/json"`
+
+```
+{"message":"Saved user"}
+```
+
+### /get-user API (fetches data from SQLite db)
+
+`curl -X GET "http://localhost:3000/get-user?userId=1"`
+
+```
+{"user":{"userId":"1","name":"User One"}}
+```
+
 ## Release to aws cloud
 
 `serverless --config serverless-aws.yml deploy --stage Prod --region ap-south-1`
